@@ -17,6 +17,6 @@ public class DbService {
     }
 
     public Task getTaskById(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Task doesn't exist in database!"));
+        return repository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task doesn't exist in database!"));
     }
 }
