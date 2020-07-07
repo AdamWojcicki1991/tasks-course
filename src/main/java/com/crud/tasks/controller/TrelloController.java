@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +17,15 @@ public class TrelloController {
 
     @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
     public void getTrelloBoards() {
-        List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
-        trelloBoards.forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName()));
+        trelloClient.getTrelloBoards().ifPresent(trelloBoard -> trelloBoard.stream()
+                .filter(trelloBoardDto -> countTrelloBoardRequiredFields(trelloBoardDto) == 2)
+                .filter(trelloBoardDto -> trelloBoardDto.getName().contains("Kodilla"))
+                .forEach(trelloBoardDto -> System.out.println(trelloBoardDto.getId() + " " + trelloBoardDto.getName())));
+    }
+
+    private Long countTrelloBoardRequiredFields(final TrelloBoardDto trelloBoardDto) {
+        return Arrays.stream(trelloBoardDto.getClass().getDeclaredFields())
+                .filter(field -> field.getName().equals("id") ^ field.getName().equals("name"))
+                .count();
     }
 }
