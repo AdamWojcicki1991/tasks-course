@@ -3,7 +3,7 @@ package com.crud.tasks.controller;
 import com.crud.tasks.domain.CreatedTrelloCard;
 import com.crud.tasks.domain.TrelloBoardDto;
 import com.crud.tasks.domain.TrelloCardDto;
-import com.crud.tasks.trello.client.TrelloClient;
+import com.crud.tasks.service.TrelloService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/v1/trello")
 public class TrelloController {
-    private final TrelloClient trelloClient;
+    private final TrelloService trelloService;
 
     @RequestMapping(method = RequestMethod.GET, value = "getTrelloBoards")
     public List<TrelloBoardDto> getTrelloBoards() {
-        return trelloClient.getTrelloBoards();
+        return trelloService.fetchTrelloBoards();
 //        trelloClient.getTrelloBoards().ifPresent(trelloBoard -> trelloBoard.stream()
 //                .filter(trelloBoardDto -> countTrelloBoardRequiredFields(trelloBoardDto) == 2)
 //                .filter(trelloBoardDto -> trelloBoardDto.getName().contains("Kodilla"))
@@ -32,7 +32,7 @@ public class TrelloController {
 
     @RequestMapping(method = RequestMethod.POST, value = "createTrelloCard")
     public CreatedTrelloCard createTrelloCard(@RequestBody TrelloCardDto trelloCardDto) {
-        return trelloClient.createNewCard(trelloCardDto);
+        return trelloService.createdTrelloCard(trelloCardDto);
     }
 
 //    private Long countTrelloBoardRequiredFields(final TrelloBoardDto trelloBoardDto) {

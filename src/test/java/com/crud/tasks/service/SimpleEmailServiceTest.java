@@ -16,14 +16,13 @@ import static org.mockito.Mockito.verify;
 public class SimpleEmailServiceTest {
     @InjectMocks
     private SimpleEmailService simpleEmailService;
-
     @Mock
     private JavaMailSender javaMailSender;
 
     @Test
     public void shouldSendEmail() {
         //GIVEN
-        Mail mail = new Mail("test@test.com", "Test", "Test message", null);
+        Mail mail = new Mail("test@test.com", "Test", "Test message");
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
