@@ -29,8 +29,8 @@ public class TaskController {
                 .orElseThrow(() -> new TaskNotFoundException("Task doesn't exist in database!")));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteTask/{taskId}")
-    public void deleteTask(@PathVariable Long taskId) {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteTask")
+    public void deleteTask(@RequestParam Long taskId) {
         service.deleteTaskByID(taskId);
     }
 

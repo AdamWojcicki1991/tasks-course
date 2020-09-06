@@ -92,7 +92,7 @@ public class TaskControllerTestSuite {
         //Given
         doNothing().when(dbService).deleteTaskByID(1L);
         //When && Then
-        mockMvc.perform(delete("/v1/task/deleteTask/{taskId}", 1L)
+        mockMvc.perform(delete("/v1/task/deleteTask?taskId=1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk());
