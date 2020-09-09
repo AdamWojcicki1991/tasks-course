@@ -33,6 +33,7 @@ dependencies {
     compile('com.google.code.gson:gson:2.8.2')
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.1.RELEASE'
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     //Disabling Embedded Tomcat application server
     //providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 }
