@@ -18,6 +18,16 @@ public class SimpleEmailService {
     private final JavaMailSender javaMailSender;
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleEmailService.class);
 
+    public void sendTasksQuantityDailyMail(final Mail mail) {
+        LOGGER.info("Starting email preparation...");
+        try {
+            javaMailSender.send(createMimeMessageTaskQuantity(mail));
+            LOGGER.info("Email has been sent");
+        } catch (MailException e) {
+            LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
+        }
+    }
+
     public void send(final Mail mail) {
         LOGGER.info("Starting email preparation...");
         try {
@@ -27,6 +37,15 @@ public class SimpleEmailService {
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
         }
+    }
+
+    private MimeMessagePreparator createMimeMessageTaskQuantity(final Mail mail) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(mailCreatorService.buildQuantityOfTrelloTasksInformationDailyMail(mail.getMessage()), true);
+        };
     }
 
     private MimeMessagePreparator createMimeMessage(final Mail mail) {

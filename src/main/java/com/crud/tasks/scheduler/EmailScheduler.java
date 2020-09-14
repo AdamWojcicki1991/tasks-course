@@ -15,6 +15,7 @@ public class EmailScheduler {
     private final TaskRepository taskRepository;
     private final AdminConfig adminConfig;
     private static final String SUBJECT = "Tasks: New Trello card";
+    private static final String CALCULATE_SUBJECT = "Tasks Once a day email";
 
     //@Scheduled(fixedDelay = 10000)
     @Scheduled(cron = "0 0 10 * * *")
@@ -26,5 +27,23 @@ public class EmailScheduler {
                 SUBJECT,
                 "Currently in database you got: " + size + " " + task
         ));
+    }
+
+    @Scheduled(cron = "0 48 12 * * *")
+    public void sendTasksQuantityInformationMail() {
+        long size = taskRepository.count();
+        if (size == 1) {
+            simpleEmailService.sendTasksQuantityDailyMail(new Mail(
+                    adminConfig.getAdminMail(),
+                    CALCULATE_SUBJECT,
+                    "Currently in database you got: " + size + " task")
+            );
+        } else {
+            simpleEmailService.sendTasksQuantityDailyMail(new Mail(
+                    adminConfig.getAdminMail(),
+                    CALCULATE_SUBJECT,
+                    "Currently in database you got: " + size + " tasks")
+            );
+        }
     }
 }
