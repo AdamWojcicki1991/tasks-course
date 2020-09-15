@@ -37,7 +37,3 @@ dependencies {
     //Disabling Embedded Tomcat application server
     //providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 }
-
-test {
-    useJUnitPlatform()
-}
