@@ -13,34 +13,34 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @CrossOrigin("*")
 @RequiredArgsConstructor
-@RequestMapping("/v1/task")
+@RequestMapping("/v1")
 public class TaskController {
     private final DbService service;
     private final TaskMapper taskMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getTasks")
+    @RequestMapping(method = RequestMethod.GET, value = "/tasks")
     public List<TaskDto> getTasks() {
         return taskMapper.mapToTaskDtoList(service.getAllTasks());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getTask/{taskId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/tasks/{taskId}")
     public TaskDto getTask(@PathVariable Long taskId) throws TaskNotFoundException {
         return taskMapper.mapToTaskDto(service.getTaskById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException("Task doesn't exist in database!")));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/deleteTask")
-    public void deleteTask(@RequestParam Long taskId) {
-        service.deleteTaskByID(taskId);
+    @RequestMapping(method = RequestMethod.POST, value = "/tasks", consumes = APPLICATION_JSON_VALUE)
+    public void createTask(@RequestBody TaskDto taskDto) {
+        service.saveTask(taskMapper.mapToTask(taskDto));
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/updateTask")
+    @RequestMapping(method = RequestMethod.PUT, value = "/tasks")
     public TaskDto updateTask(@RequestBody TaskDto taskDto) {
         return taskMapper.mapToTaskDto((service.saveTask(taskMapper.mapToTask(taskDto))));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/createTask", consumes = APPLICATION_JSON_VALUE)
-    public void createTask(@RequestBody TaskDto taskDto) {
-        service.saveTask(taskMapper.mapToTask(taskDto));
+    @RequestMapping(method = RequestMethod.DELETE, value = "/tasks/{taskId}")
+    public void deleteTask(@PathVariable Long taskId) {
+        service.deleteTaskByID(taskId);
     }
 }
