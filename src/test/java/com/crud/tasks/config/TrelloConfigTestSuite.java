@@ -24,8 +24,8 @@ public class TrelloConfigTestSuite {
         String userName = trelloConfig.getTrelloUserName();
         //THEN
         assertEquals("https://api.trello.com/1", endpoint);
-        assertEquals("9cde7680f5c160e64daa1e9586493d5c", trelloAppKey);
-        assertEquals("a77032318c5947d3d795eb0058f75d253d459bb45da9ba13d7c622b51abaaa37", trelloToken);
-        assertEquals("adam00278002", userName);
+        assertEquals("test_key", trelloAppKey);
+        assertEquals("test_token", trelloToken);
+        assertEquals("test_user", userName);
     }
 }
